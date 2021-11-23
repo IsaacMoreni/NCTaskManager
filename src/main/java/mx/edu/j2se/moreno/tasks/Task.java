@@ -1,5 +1,10 @@
 package mx.edu.j2se.moreno.tasks;
 
+/**
+ * @author Isaac Moreno
+ * @version 1.1
+ */
+
 public class Task {
 
     /* Attributes */
@@ -120,13 +125,27 @@ public class Task {
      * @return         the next start time of the task execution after the current time.
      */
     int nextTimeAfter(int current){
-        int nextTask = startTime;
-        do {
-            if(current < nextTask)
-                return nextTask;
-            else
-                nextTask += this.repeatInterval;
-        }while(this.endTime >= nextTask);
+        if(this.isActive()) {
+            int nextTask = startTime;
+            do {
+                if (current < nextTask)
+                    return nextTask;
+                else
+                    nextTask += this.repeatInterval;
+            } while (this.endTime >= nextTask);
+        }
         return -1;
+    }
+
+    /**
+     * Compare the Task object with another task object
+     * @param task Not null task
+     */
+    boolean isEqual(Task task){
+        if(task.getTitle() == this.title && task.getStartTime() == this.startTime
+        && task.getEndTime() == this.endTime && task.getRepeatInterval() == this.repeatInterval){
+            return true;
+        }
+        return false;
     }
 }
