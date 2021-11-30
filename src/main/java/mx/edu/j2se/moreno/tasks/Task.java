@@ -22,10 +22,14 @@ public class Task {
      *
      * @param  title  a little describe of event.
      * @param  time   the time that the event happens.
+     * @exception IllegalArgumentException throws exception when time is less than 0.
      */
     public Task (String title, int time){
         this.title = title;
-        this.startTime = time;
+        if(time > 0)
+            this.startTime = time;
+        else
+            throw new IllegalArgumentException();
         this.endTime = -1;
         this.repeatInterval = 0;
         this. active = false;
@@ -39,10 +43,14 @@ public class Task {
      * @param  start     the start of the first event.
      * @param  end       the end date of the repetitive task.
      * @param  interval  the time between the task events.
+     * @exception IllegalArgumentException throws exception when start is less than 0.
      */
     public Task (String title, int start, int end, int interval){
         this.title = title;
-        this.startTime = start;
+        if (start > 0)
+            this.startTime = start;
+        else
+            throw new IllegalArgumentException();
         this.active = false;
         this.endTime = start < end ? end : -1;
         this.repeatInterval = start < end ? interval : 0;
@@ -78,9 +86,13 @@ public class Task {
      * If the task was a repetitive one,it should become non-repetitive.
      *
      * @param time new time of the event.
+     * @exception IllegalArgumentException throws exception when time is less than 0.
      */
     void setTime(int time){
-        this.startTime = time;
+        if (time > 0)
+            this.startTime = time;
+        else
+            throw new IllegalArgumentException();
         this.endTime = -1;
         this.repeatInterval = 0;
     }
@@ -104,9 +116,13 @@ public class Task {
      * @param start    new startTime of the Task
      * @param end      new endTime of the Task
      * @param interval new repeatInterval of the Task
+     * @exception IllegalArgumentException throws exception when start is less than 0.
      */
     void setTime(int start, int end, int interval){
-        this.startTime = start;
+        if (start > 0)
+            this.startTime = start;
+        else
+            throw new IllegalArgumentException();
         this.endTime = start < end ? end : -1;
         this.repeatInterval = start < end ? interval : 0;
     }
@@ -123,8 +139,11 @@ public class Task {
      *
      * @param current  set the current time
      * @return         the next start time of the task execution after the current time.
+     * @exception IllegalArgumentException Current time can't be less than 0.
      */
     int nextTimeAfter(int current){
+        if (current < 0)
+            throw new IllegalArgumentException();
         if(this.isActive()) {
             int nextTask = startTime;
             do {
@@ -140,8 +159,11 @@ public class Task {
     /**
      * Compare the Task object with another task object
      * @param task Not null task
+     * @exception NullPointerException thrown by a null pointer in the param
      */
     boolean isEqual(Task task){
+        if(task == null)
+            throw new NullPointerException();
         if(task.getTitle() == this.title && task.getStartTime() == this.startTime
         && task.getEndTime() == this.endTime && task.getRepeatInterval() == this.repeatInterval){
             return true;

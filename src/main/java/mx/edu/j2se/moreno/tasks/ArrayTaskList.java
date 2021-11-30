@@ -16,8 +16,11 @@ public class ArrayTaskList {
     /**
      * Add a task at the end of the list.
      *
+     * @exception NullPointerException thrown by a null pointer in the param
      */
     void add(Task task){
+        if(task == null)
+            throw new NullPointerException();
         Task[] tmpArray = new Task[length + 1];
         if (length >= 0) System.arraycopy(taskArray, 0, tmpArray, 0, length);
         tmpArray[length] = task;
@@ -30,8 +33,11 @@ public class ArrayTaskList {
      *
      * @return return true if the task is deleted, return false if the
      * task wasn't in the list.
+     * @exception NullPointerException thrown by a null pointer in the param
      */
     boolean remove(Task task){
+        if(task == null)
+            throw new NullPointerException();
         int i;
         boolean found = false;
         for (i=0; i < length; i++) {
@@ -63,10 +69,11 @@ public class ArrayTaskList {
 
     /**
      * @return a reference of the task in the list
+     * @exception ArrayIndexOutOfBoundsException If the index doesn't exist, is less than 0 or is greater than size.
      */
     Task getTask(int index){
         if(index >= length || index < 0)
-            return null;
+            throw new ArrayIndexOutOfBoundsException();
         return taskArray[index];
     }
 
@@ -75,8 +82,11 @@ public class ArrayTaskList {
      * interval given.
      *
      * @return A list with the events that will happen.
+     * @exception IllegalArgumentException When from is greater than to, or when anyone is less than 0.
      */
     ArrayTaskList incoming(int from, int to){
+        if(from < 0 || to < 0 || from > to)
+            throw new IllegalArgumentException();
         ArrayTaskList taskIncluded = new ArrayTaskList();
         int nextTime;
         for(int i = 0; i < length; i++){
