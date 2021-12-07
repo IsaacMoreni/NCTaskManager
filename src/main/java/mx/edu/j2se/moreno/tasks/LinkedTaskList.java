@@ -4,22 +4,17 @@ package mx.edu.j2se.moreno.tasks;
  * @author Isaac Moreno
  * @version 1.0
  */
-public class LinkedTaskList {
+public class LinkedTaskList extends AbstractTaskList{
 
     private TaskElement first;
     private TaskElement last;
-    private int length;
 
     public LinkedTaskList(){
-        this.length = 0;
+        length=0;
     }
 
-    /**
-     * Add a task at the end of the list.
-     *
-     * @exception NullPointerException thrown by a null pointer in the param
-     */
-    void add(Task task){
+    @Override
+    public void add(Task task){
         if(task == null)
             throw new NullPointerException();
         if(length == 0){
@@ -33,14 +28,8 @@ public class LinkedTaskList {
         length ++;
     }
 
-    /**
-     * Remove the first coincidence of the task given from the list
-     *
-     * @return return true if the task is deleted, return false if the
-     * task wasn't in the list.
-     * @exception NullPointerException thrown by a null pointer in the param
-     */
-    boolean remove(Task task){
+    @Override
+    public boolean remove(Task task){
         if(task == null)
             throw new NullPointerException();
         switch (length){
@@ -77,18 +66,8 @@ public class LinkedTaskList {
         }
     }
 
-    /**
-     * @return the number of tasks in the list.
-     */
-    int size(){
-        return length;
-    }
-
-    /**
-     * @return a reference of the task in the list
-     * @exception ArrayIndexOutOfBoundsException If the index doesn't exist, is less than 0 or is greater than size.
-     */
-    Task getTask(int index){
+    @Override
+    public Task getTask(int index){
         if(index >= length || index < 0)
             throw new ArrayIndexOutOfBoundsException();
         TaskElement tmp = first;
@@ -98,50 +77,47 @@ public class LinkedTaskList {
         return tmp.getTask();
     }
 
-    /**
-     * This checks the activities in the ist that are going to happen in the
-     * interval given.
-     *
-     * @return A list with the events that will happen.
-     * @exception IllegalArgumentException When from is greater than to, or when anyone is less than 0.
-     */
-    LinkedTaskList incoming(int from, int to){
-        if(from < 0 || to < 0 || from > to)
-            throw new IllegalArgumentException();
-        LinkedTaskList taskIncluded = new LinkedTaskList();
-        int nextTime;
-        TaskElement index = first;
-        while(index.getNext()!=null){
-            nextTime = index.getTask().nextTimeAfter(from);
-            if(nextTime >= from && nextTime <= to)
-                taskIncluded.add(index.getTask());
-            index = index.getNext();
+//    @Override
+//    LinkedTaskList incoming(int from, int to){
+//        if(from < 0 || to < 0 || from > to)
+//            throw new IllegalArgumentException();
+//        LinkedTaskList taskIncluded = new LinkedTaskList();
+//        int nextTime;
+//        TaskElement index = first;
+//        while(index.getNext()!=null){
+//            nextTime = index.getTask().nextTimeAfter(from);
+//            if(nextTime >= from && nextTime <= to)
+//                taskIncluded.add(index.getTask());
+//            index = index.getNext();
+//        }
+//        if (taskIncluded.size() != 0)
+//            return taskIncluded;
+//        return null;
+//    }
+
+    class TaskElement {
+
+        private final Task task;
+        private TaskElement nextTask;
+
+        protected TaskElement(Task task){
+            this.task = task;
+            nextTask = null;
         }
-        if (taskIncluded.size() != 0)
-            return taskIncluded;
-        return null;
+
+        protected Task getTask(){
+            return task;
+        }
+
+        protected TaskElement getNext(){
+            return nextTask;
+        }
+
+        protected void setNextTask(TaskElement next){
+            nextTask = next;
+        }
     }
+
 }
 
-class TaskElement {
 
-    private final Task task;
-    private TaskElement nextTask;
-
-    protected TaskElement(Task task){
-        this.task = task;
-        nextTask = null;
-    }
-
-    protected Task getTask(){
-        return task;
-    }
-
-    protected TaskElement getNext(){
-        return nextTask;
-    }
-
-    protected void setNextTask(TaskElement next){
-        nextTask = next;
-    }
-}
